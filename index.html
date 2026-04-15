@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Section Material Request · ISO 9001</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    body {
+      background: #f2f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 12px 8px;
+      margin: 0;
+    }
+    .form-container {
+      max-width: 480px;
+      width: 100%;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+      padding: 18px 14px 24px;
+      border: 1px solid #e9ecf0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      max-height: 100vh;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 10px;
+    }
+    .row-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .logo-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: contain;
+      background: #fff;
+    }
+    .title-main {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1e2f4e;
+      letter-spacing: -0.01em;
+    }
+
+    .field-pair {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+    .field-pair label {
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      min-width: 65px;
+    }
+    .field-pair input {
+      flex: 1;
+      padding: 10px 8px;
+      border: 1.5px solid #d0d7de;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      background: white;
+      min-width: 0;
+    }
+
+    .submit-btn {
+      background: #0a2540;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.2s;
+      margin: 8px 0;
+      width: 100%;
+      cursor: pointer;
+    }
+    .submit-btn:active {
+      background: #1e3b5c;
+      transform: scale(0.98);
+    }
+
+    .error-bar {
+      min-height: 42px;
+      background: #fef1f0;
+      border-radius: 16px;
+      padding: 8px 16px;
+      margin: 8px 0 12px;
+      color: #bc1c1c;
+      font-weight: 500;
+      font-size: 0.85rem;
+      border-left: 6px solid #bc1c1c;
+      word-break: break-word;
+    }
+
+    .section-block {
+      margin-top: 20px;
+      margin-bottom: 16px;
+      border-top: 2px solid #e2e8f0;
+      padding-top: 16px;
+    }
+    
+    .section-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #1e2f4e;
+      font-size: 1.1rem;
+    }
+
+    .section-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      table-layout: fixed;
+    }
+    
+    .section-table th {
+      background: #1e2f4e;
+      color: white;
+      font-weight: 600;
+      font-size: 0.65rem;
+      padding: 6px 2px;
+      text-align: center;
+      border-right: 1px solid #3a4c66;
+      word-break: break-word;
+    }
+    
+    .section-table td {
+      padding: 6px 2px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: center;
+      vertical-align: middle;
+      background: #fafbfc;
+    }
+    
+    .section-table select, .section-table input {
+      width: 100%;
+      padding: 8px 2px;
+      border-radius: 10px;
+      border: 1.5px solid #cfdde9;
+      background: white;
+      font-size: 0.75rem;
+      text-align: center;
+    }
+
+    /* C/S Dim 占2份，Thickness 1份，Current Stock 1份 */
+    .section-table th:nth-child(4) { width: 25%; }
+    .section-table th:nth-child(5) { width: 12.5%; }
+    .section-table th:nth-child(6) { width: 12.5%; }
+    
+    .csdim-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+    
+    .csdim-wrapper select {
+      width: 48%;
+      padding: 6px 0;
+    }
+    
+    .x-symbol {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #1e2f4e;
+    }
+
+    .calc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      background: #f9fafc;
+      border-radius: 12px;
+      table-layout: fixed;
+    }
+    
+    .calc-table th {
+      background: #3a5470;
+      color: white;
+      padding: 6px 2px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-align: center;
+      border: 1px solid #4f6a88;
+      word-break: break-word;
+    }
+    
+    .calc-table td {
+      padding: 6px 2px;
+      background: white;
+      border: 1px solid #d9e1ec;
+      text-align: center;
+    }
+    
+    .calc-table input {
+      width: 100%;
+      padding: 8px 2px;
+      border-radius: 10px;
+      border: 1.5px solid #cfdde9;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    .validation-icon {
+      margin-left: 5px;
+      font-size: 1rem;
+    }
+    
+    .icon-valid { color: #27ae60; }
+    .icon-invalid { color: #e74c3c; }
+
+    .info-note {
+      font-size: 0.65rem;
+      color: #556c83;
+      margin-top: 4px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <!-- 第一排：logo + 标题 -->
+  <div class="row-logo">
+    <img class="logo-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a2540' rx='20'/%3E%3Ctext x='22' y='68' font-family='Arial' font-weight='bold' font-size='46' fill='white'%3ESR%3C/text%3E%3C/svg%3E" alt="logo">
+    <span class="title-main">Section Request Form</span>
+  </div>
+
+  <!-- 第二排: SO No. + Item No. -->
+  <div class="row">
+    <div class="field-pair"><label>SO No.</label><input type="text" id="soNo" placeholder="SO-123"></div>
+    <div class="field-pair"><label>Item No.</label><input type="text" id="itemNo" placeholder="IT-001"></div>
+  </div>
+
+  <!-- 第三排: Customer + Delivery Date -->
+  <div class="row">
+    <div class="field-pair"><label>Customer</label><input type="text" id="customerName" placeholder="Name"></div>
+    <div class="field-pair"><label>Delivery</label><input type="date" id="deliveryDate" value="2026-04-20"></div>
+  </div>
+
+  <!-- 第四排: Requestor -->
+  <div class="row">
+    <div class="field-pair"><label>Requestor</label><input type="text" id="requestor" placeholder="Worker ID"></div>
+  </div>
+
+  <!-- 第五排: Error Bar -->
+  <div class="error-bar" id="errorBar"></div>
+
+  <!-- Section Types 1-5 (动态生成) -->
+  <div id="sectionsContainer"></div>
+
+  <!-- Submit Button -->
+  <button class="submit-btn" id="submitMainBtn">Submit Request</button>
+</div>
+
+<!-- Error Confirmation Modal -->
+<div id="errorModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 25px; border-radius: 15px; text-align: center; max-width: 450px; width: 90%;">
+        <h3 style="margin-bottom: 15px; color: #e74c3c; font-size: 22px;">⚠️ Validation Errors Found</h3>
+        <div style="background: #fef1f0; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left; max-height: 300px; overflow-y: auto;">
+            <div id="modalErrorList" style="color: #555; font-size: 14px; line-height: 1.6;"></div>
+        </div>
+        <p style="margin-bottom: 20px; color: #555; font-size: 14px;">
+            Do you want to force submit anyway?
+        </p>
+        <div style="display: flex; gap: 12px; justify-content: center;">
+            <button onclick="window.confirmErrorSubmit(true)" 
+                    style="padding: 12px 30px; background: #2ecc71; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px;">
+                Yes, Submit
+            </button>
+            <button onclick="window.confirmErrorSubmit(false)" 
+                    style="padding: 12px 30px; background: #e74c3c; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px;">
+                No, Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<iframe name="hiddenFrame" id="hiddenFrame" style="display:none;"></iframe>
+
+<script>
+  (function(){
+    "use strict";
+
+    const GAS_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzaJ0eEqElPSLwV1ygRXEspkezoDzCny9Q1MFdXWHHxnDMGW7taIJqcpTgTpKKrj8F-/exec';
+    const SECTION_LEN = 6000;
+
+    // DOM 元素
+    const soNo = document.getElementById('soNo');
+    const itemNo = document.getElementById('itemNo');
+    const customerName = document.getElementById('customerName');
+    const deliveryDate = document.getElementById('deliveryDate');
+    const requestor = document.getElementById('requestor');
+    const submitBtn = document.getElementById('submitMainBtn');
+    const errorBar = document.getElementById('errorBar');
+    const sectionsContainer = document.getElementById('sectionsContainer');
+    const errorModal = document.getElementById('errorModal');
+    const modalErrorList = document.getElementById('modalErrorList');
+
+    let pendingSubmitData = null;
+    let currentErrors = [];
+
+    // 生成5个Section
+    function generateSections() {
+      for (let i = 1; i <= 5; i++) {
+        const block = document.createElement('div');
+        block.className = 'section-block';
+        block.innerHTML = `
+          <div class="section-title">📐 Section Type ${i}</div>
+          
+          <table class="section-table">
+            <thead>
+              <tr><th>Shape</th><th>Grade</th><th>Surface</th><th>C/S Dim</th><th>Thickness</th><th>Current Stock</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><select id="shape${i}" data-section="${i}"><option value="">-</option><option>Square</option><option>Round</option><option>I-Beam</option></select></td>
+                <td><select id="grade${i}" data-section="${i}"><option value="">-</option><option>S275</option><option>S355</option><option>304 SS</option></select></td>
+                <td><select id="surface${i}" data-section="${i}"><option value="">-</option><option>Mill</option><option>Galvanized</option><option>Primed</option></select></td>
+                <td>
+                  <div class="csdim-wrapper">
+                    <select id="csDimLeft${i}" data-section="${i}"><option value="">-</option><option>50</option><option>75</option><option>100</option><option>150</option></select>
+                    <span class="x-symbol">x</span>
+                    <select id="csDimRight${i}" data-section="${i}"><option value="">-</option><option>50</option><option>75</option><option>100</option><option>150</option></select>
+                  </div>
+                </td>
+                <td><select id="thickness${i}" data-section="${i}"><option value="">-</option><option>3.0</option><option>5.0</option><option>8.0</option><option>10.0</option></select></td>
+                <td><input type="text" id="currentStock${i}" placeholder="pcs" readonly style="background:#f4f7fb;"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table class="calc-table">
+            <thead>
+              <tr><th colspan="2">Based on Drawing</th><th rowspan="2">Actual Full Length<br><span style="font-weight:400;">(Qty)</span></th><th rowspan="2">Status</th></tr>
+              <tr><th>Piece Length (mm)</th><th>x Piece Qty</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="number" id="pieceLength${i}" step="0.1" min="0" placeholder="850" data-section="${i}"></td>
+                <td><input type="number" id="pieceQty${i}" step="1" min="1" placeholder="8" data-section="${i}"></td>
+                <td><input type="number" id="actualQty${i}" step="1" min="0" placeholder="1" data-section="${i}"></td>
+                <td id="status${i}" style="font-size:1.5rem;"></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="info-note">Max per section: <span id="maxPerSection${i}">-</span> | Min required: <span id="minRequired${i}">-</span></div>
+        `;
+        sectionsContainer.appendChild(block);
+      }
+    }
+
+    generateSections();
+
+    // 计算并验证单个section
+    function validateSection(sectionNum) {
+      const pieceLength = parseFloat(document.getElementById(`pieceLength${sectionNum}`).value) || 0;
+      const pieceQty = parseFloat(document.getElementById(`pieceQty${sectionNum}`).value) || 0;
+      const actualQty = parseFloat(document.getElementById(`actualQty${sectionNum}`).value) || 0;
+      
+      if (pieceLength <= 0 || pieceQty <= 0 || actualQty < 0) {
+        return { valid: false, error: 'incomplete', maxPerSection: 0, minRequired: 0 };
+      }
+
+      const maxPerSection = Math.floor(SECTION_LEN / pieceLength);
+      const minRequired = Math.ceil(pieceQty / maxPerSection);
+      
+      document.getElementById(`maxPerSection${sectionNum}`).textContent = maxPerSection;
+      document.getElementById(`minRequired${sectionNum}`).textContent = minRequired;
+
+      const statusEl = document.getElementById(`status${sectionNum}`);
+      
+      if (actualQty < minRequired) {
+        statusEl.innerHTML = '<span class="icon-invalid">❌</span>';
+        return { valid: false, error: 'insufficient', maxPerSection, minRequired, pieceLength, pieceQty, actualQty };
+      } else if (actualQty > minRequired) {
+        statusEl.innerHTML = '<span class="icon-invalid">❌</span>';
+        return { valid: false, error: 'excess', maxPerSection, minRequired, pieceLength, pieceQty, actualQty };
+      } else {
+        statusEl.innerHTML = '<span class="icon-valid">✅</span>';
+        return { valid: true, error: null, maxPerSection, minRequired, pieceLength, pieceQty, actualQty };
+      }
+    }
+
+    // 收集所有错误
+    function collectAllErrors() {
+      const errors = [];
+      const baseFields = [
+        { field: 'SO No.', value: soNo.value },
+        { field: 'Item No.', value: itemNo.value },
+        { field: 'Customer Name', value: customerName.value },
+        { field: 'Delivery Date', value: deliveryDate.value },
+        { field: 'Requestor', value: requestor.value }
+      ];
+      
+      baseFields.forEach(f => {
+        if (!f.value || !f.value.toString().trim()) {
+          errors.push(`${f.field} is required`);
+        }
+      });
+
+      for (let i = 1; i <= 5; i++) {
+        const shape = document.getElementById(`shape${i}`).value;
+        const grade = document.getElementById(`grade${i}`).value;
+        const surface = document.getElementById(`surface${i}`).value;
+        const csDimL = document.getElementById(`csDimLeft${i}`).value;
+        const csDimR = document.getElementById(`csDimRight${i}`).value;
+        const thickness = document.getElementById(`thickness${i}`).value;
+        
+        if (!shape || !grade || !surface || !csDimL || !csDimR || !thickness) {
+          errors.push(`Section ${i}: All fields required`);
+          continue;
+        }
+
+        const validation = validateSection(i);
+        if (!validation.valid) {
+          if (validation.error === 'incomplete') {
+            errors.push(`Section ${i}: Incomplete calculation data`);
+          } else if (validation.error === 'insufficient') {
+            errors.push(`Section ${i}: Need ${validation.pieceQty} pcs of ${validation.pieceLength}mm, requires at least ${validation.minRequired} sections (you entered ${validation.actualQty})`);
+          } else if (validation.error === 'excess') {
+            errors.push(`Section ${i}: Need ${validation.pieceQty} pcs of ${validation.pieceLength}mm, only requires ${validation.minRequired} sections (you entered ${validation.actualQty} - excess waste)`);
+          }
+        }
+      }
+
+      return errors;
+    }
+
+    // 更新UI
+    function updateUI() {
+      const errors = collectAllErrors();
+      currentErrors = errors;
+      
+      if (errors.length > 0) {
+        errorBar.innerHTML = '❌ ' + errors.join('<br>• ');
+      } else {
+        errorBar.innerHTML = '';
+      }
+
+      // 更新所有section的验证状态
+      for (let i = 1; i <= 5; i++) {
+        validateSection(i);
+      }
+    }
+
+    // 收集所有数据
+    function collectAllData() {
+      const data = {
+        timestamp: new Date().toISOString(),
+        soNo: soNo.value, itemNo: itemNo.value, customerName: customerName.value,
+        deliveryDate: deliveryDate.value, requestor: requestor.value,
+        errorMessages: currentErrors.join('; ')
+      };
+
+      for (let i = 1; i <= 5; i++) {
+        data[`section${i}_shape`] = document.getElementById(`shape${i}`).value;
+        data[`section${i}_grade`] = document.getElementById(`grade${i}`).value;
+        data[`section${i}_surface`] = document.getElementById(`surface${i}`).value;
+        data[`section${i}_csDim`] = document.getElementById(`csDimLeft${i}`).value + 'x' + document.getElementById(`csDimRight${i}`).value;
+        data[`section${i}_thickness`] = document.getElementById(`thickness${i}`).value;
+        data[`section${i}_pieceLength`] = document.getElementById(`pieceLength${i}`).value;
+        data[`section${i}_pieceQty`] = document.getElementById(`pieceQty${i}`).value;
+        data[`section${i}_actualQty`] = document.getElementById(`actualQty${i}`).value;
+      }
+
+      return data;
+    }
+
+    // 提交到GAS
+    function performSubmit(data) {
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = GAS_WEBAPP_URL;
+      form.target = 'hiddenFrame';
+      
+      Object.keys(data).forEach(key => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = data[key] || '';
+        form.appendChild(input);
+      });
+      
+      document.body.appendChild(form);
+      form.submit();
+      setTimeout(() => document.body.removeChild(form), 1000);
+      
+      alert('✅ Request submitted successfully!');
+      errorBar.innerHTML = '';
+      currentErrors = [];
+    }
+
+    // 确认回调
+    window.confirmErrorSubmit = function(isYes) {
+      errorModal.style.display = 'none';
+      if (isYes && pendingSubmitData) {
+        performSubmit(pendingSubmitData);
+        pendingSubmitData = null;
+      }
+    };
+
+    // 提交处理
+    function handleSubmit() {
+      const errors = collectAllErrors();
+      
+      if (errors.length > 0) {
+        pendingSubmitData = collectAllData();
+        modalErrorList.innerHTML = errors.map(e => `• ${e}`).join('<br>');
+        errorModal.style.display = 'flex';
+      } else {
+        performSubmit(collectAllData());
+      }
+    }
+
+    // 事件绑定
+    document.addEventListener('input', updateUI);
+    document.addEventListener('change', updateUI);
+    
+    errorModal.addEventListener('click', (e) => {
+      if (e.target === errorModal) {
+        errorModal.style.display = 'none';
+      }
+    });
+
+    submitBtn.addEventListener('click', handleSubmit);
+    
+    window.addEventListener('load', () => {
+      if (!deliveryDate.value) deliveryDate.value = '2026-04-20';
+      updateUI();
+    });
+  })();
+</script>
+</body>
+</html>
